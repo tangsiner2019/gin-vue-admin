@@ -3,12 +3,12 @@
     <div>
       <span>Powered by</span>
       <span>
-      <a href="https://github.com/flipped-aurora/gin-vue-admin">gin-vue-admin</a>
+      <a href="https://www.bomqi.com" target="_blank">Bomqi Teac. Stu</a>
       </span>
       <el-divider direction="vertical"></el-divider>
-      <span>Copyright</span>
+      <span>© 2016-2020. 黑麦设计 All Rights Reserved.</span>
       <span>
-      <a href="https://github.com/flipped-aurora">flipped-aurora团队</a>
+      <a href="http://www.ryedesign.cn" target="_blank">成都黑麦设计顾问有限公司</a>
       </span>
     </div>
   </div>

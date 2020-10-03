@@ -8,7 +8,7 @@
         <div class="header">
           <a href="/">
             <!-- <img src="~@/assets/logo.png" class="logo" alt="logo" /> -->
-            <span class="title">Gin-Vue-Admin</span>
+            <span class="title">黑麦管理平台</span>
           </a>
         </div>
       </div>
@@ -24,10 +24,8 @@
               placeholder="请输入用户名"
               v-model="registerForm.username"
             >
-            <i
-                class="el-input__icon el-icon-user"
-                slot="suffix"
-              ></i></el-input>
+              <i class="el-input__icon el-icon-user" slot="suffix"></i
+            ></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input
@@ -42,18 +40,22 @@
               ></i>
             </el-input>
           </el-form-item>
-          <el-form-item prop="rePassword" style="position:relative">
-          <el-input
-            :type="lock==='lock'?'password':'text'"
-            placeholder="请再次输入密码"
-            v-model="registerForm.rePassword"
-          >
-            <i :class="'el-input__icon el-icon-' + lock" @click="changeLock" slot="suffix"></i>
-          </el-input>
-        </el-form-item>
-        
+          <el-form-item prop="rePassword" style="position: relative">
+            <el-input
+              :type="lock === 'lock' ? 'password' : 'text'"
+              placeholder="请再次输入密码"
+              v-model="registerForm.rePassword"
+            >
+              <i
+                :class="'el-input__icon el-icon-' + lock"
+                @click="changeLock"
+                slot="suffix"
+              ></i>
+            </el-input>
+          </el-form-item>
+
           <el-form-item>
-            <el-button type="primary" @click="submitForm" style="width:100%"
+            <el-button type="primary" @click="submitForm" style="width: 100%"
               >注 册</el-button
             >
           </el-form-item>
@@ -61,22 +63,8 @@
       </div>
 
       <div class="footer">
-        <div class="links">
-          <a href="http://doc.henrongyi.top/"
-            ><img src="@/assets/docs.png" class="link-icon"
-          /></a>
-          <a href="https://www.yuque.com/flipped-aurora/"
-            ><img src="@/assets/yuque.png" class="link-icon"
-          /></a>
-          <a href="https://github.com/flipped-aurora/gin-vue-admin"
-            ><img src="@/assets/github.png" class="link-icon"
-          /></a>
-          <a href="https://space.bilibili.com/322210472"
-            ><img src="@/assets/video.png" class="link-icon"
-          /></a>
-        </div>
         <div class="copyright">
-          Copyright &copy; 2020 💖flipped-aurora
+          &copy; 2016-2020. 黑麦设计 All Rights Reserved.
         </div>
       </div>
     </div>
@@ -84,76 +72,78 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { register } from '@/api/user'
+import { mapActions } from "vuex";
+import { register } from "@/api/user";
 export default {
-  name: 'Register',
+  name: "Register",
   data() {
     const ratioPassword = (rule, value, callback) => {
       if (value != this.registerForm.password) {
-        return callback(new Error('两次密码不同'))
+        return callback(new Error("两次密码不同"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const checkUsername = (rule, value, callback) => {
       if (value.length < 5 || value.length > 12) {
-        return callback(new Error('请输入正确的用户名'))
+        return callback(new Error("请输入正确的用户名"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const checkPassword = (rule, value, callback) => {
       if (value.length < 6 || value.length > 12) {
-        return callback(new Error('请输入正确的密码'))
+        return callback(new Error("请输入正确的密码"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
 
     return {
-      lock: 'lock',
+      lock: "lock",
       registerForm: {
-        username: '',
-        password: '',
-        rePassword: ''
+        username: "",
+        password: "",
+        rePassword: "",
       },
       rules: {
-        username: [{ validator: checkUsername, trigger: 'blur' }],
-        password: [{ validator: checkPassword, trigger: 'blur' }],
-        rePassword: [{ validator: ratioPassword, trigger: 'blur' }]
-      }
-    }
+        username: [{ validator: checkUsername, trigger: "blur" }],
+        password: [{ validator: checkPassword, trigger: "blur" }],
+        rePassword: [{ validator: ratioPassword, trigger: "blur" }],
+      },
+    };
   },
   methods: {
-    ...mapActions('user', ['LoginIn']),
+    ...mapActions("user", ["LoginIn"]),
     async submitForm() {
-      this.$refs.registerForm.validate(async v => {
+      this.$refs.registerForm.validate(async (v) => {
         if (v) {
-          const res = await register(this.registerForm)
+          // this.registerForm.nickname = this.registerForm.username;
+          // this.registerForm.authorityId = this.registerForm.username;
+          const res = await register(this.registerForm);
           if (res.code == 0) {
             this.$message({
-              type: 'success',
-              message: '注册成功',
-              showClose: true
-            })
-            this.$router.push({name:"login"})
+              type: "success",
+              message: "注册成功",
+              showClose: true,
+            });
+            this.$router.push({ name: "login" });
           }
         } else {
           this.$message({
-            type: 'error',
-            message: '请正确填写注册信息',
-            showClose: true
-          })
-          return false
+            type: "error",
+            message: "请正确填写注册信息",
+            showClose: true,
+          });
+          return false;
         }
-      })
+      });
     },
     changeLock() {
-      this.lock === 'lock' ? (this.lock = 'unlock') : (this.lock = 'lock')
-    }
-  }
-}
+      this.lock === "lock" ? (this.lock = "unlock") : (this.lock = "lock");
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -208,7 +198,8 @@ export default {
   .container {
     width: 100%;
     min-height: 100%;
-    background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
+    // background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
+    background: #f0f2f5;
     background-size: 100%;
     padding: 110px 0 144px;
     a {
