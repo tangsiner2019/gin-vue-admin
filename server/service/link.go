@@ -35,7 +35,7 @@ func DeleteLink(link model.Link) (err error) {
 // @return                    error
 
 func DeleteLinkByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Link{},"id in ?",ids.Ids).Error
+	err = global.GVA_DB.Delete(&[]model.Link{}, "id in ?", ids.Ids).Error
 	return err
 }
 
@@ -71,10 +71,10 @@ func GetLink(id uint) (err error, link model.Link) {
 func GetLinkInfoList(info request.LinkSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-    // 创建db
+	// 创建db
 	db := global.GVA_DB.Model(&model.Link{})
-    var links []model.Link
-    // 如果有条件搜索 下方会自动创建搜索语句
+	var links []model.Link
+	// 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&links).Error
 	return err, links, total

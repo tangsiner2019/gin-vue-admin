@@ -58,7 +58,7 @@ func DeleteLink(c *gin.Context) {
 // @Router /link/deleteLinkByIds [delete]
 func DeleteLinkByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    _ = c.ShouldBindJSON(&IDS)
+	_ = c.ShouldBindJSON(&IDS)
 	err := service.DeleteLinkByIds(IDS)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)

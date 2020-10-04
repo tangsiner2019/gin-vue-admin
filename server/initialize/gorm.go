@@ -49,6 +49,13 @@ func GormDBTables(db *gorm.DB) {
 		model.SysOperationRecord{},
 		model.Banner{},
 		model.Link{},
+		model.Cate{},
+		model.News{},
+		model.Product{},
+		model.Feedback{},
+		model.Setting{},
+		model.Team{},
+		model.Server{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", zap.Any("err", err))

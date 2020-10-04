@@ -53,4 +53,3 @@ func GetPolicyPathByAuthorityId(c *gin.Context) {
 	paths := service.GetPolicyPathByAuthorityId(cmr.AuthorityId)
 	response.OkWithData(resp.PolicyPathResponse{Paths: paths}, c)
 }
-

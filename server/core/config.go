@@ -5,14 +5,14 @@ import (
 	"gin-vue-admin/global"
 	_ "gin-vue-admin/packfile"
 	"github.com/fsnotify/fsnotify"
-	"github.com/spf13/viper"
 	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 )
 
 const defaultConfigFile = "config.yaml"
 
 func init() {
-	pflag.StringP("configFile","c", "", "choose config file.")
+	pflag.StringP("configFile", "c", "", "choose config file.")
 	pflag.Parse()
 
 	// 优先级: 命令行 > 环境变量 > 默认值
@@ -22,7 +22,7 @@ func init() {
 	v.BindEnv("configFile") // GVA_CONFIGFILE
 
 	configFile := v.GetString("configFile")
-	if configFile == ""{
+	if configFile == "" {
 		configFile = defaultConfigFile
 	}
 

@@ -49,7 +49,7 @@ func CreateTemp(c *gin.Context) {
 				Method:      "DELETE",
 			},
 			{
-				Path:        "/" + a.Abbreviation + "/" + "delete" + a.StructName+"ByIds",
+				Path:        "/" + a.Abbreviation + "/" + "delete" + a.StructName + "ByIds",
 				Description: "批量删除" + a.Description,
 				ApiGroup:    a.Abbreviation,
 				Method:      "DELETE",

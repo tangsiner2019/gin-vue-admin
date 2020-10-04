@@ -3,7 +3,7 @@
     <div>
       <span>Powered by</span>
       <span>
-      <a href="https://www.bomqi.com" target="_blank">Bomqi Teac. Stu</a>
+      <a href="https://www.bomqi.com" target="_blank">Bomqi Tec. Stu.</a>
       </span>
       <el-divider direction="vertical"></el-divider>
       <span>© 2016-2020. 黑麦设计 All Rights Reserved.</span>

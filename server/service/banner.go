@@ -35,7 +35,7 @@ func DeleteBanner(banner model.Banner) (err error) {
 // @return                    error
 
 func DeleteBannerByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Banner{},"id in ?",ids.Ids).Error
+	err = global.GVA_DB.Delete(&[]model.Banner{}, "id in ?", ids.Ids).Error
 	return err
 }
 
@@ -71,10 +71,10 @@ func GetBanner(id uint) (err error, banner model.Banner) {
 func GetBannerInfoList(info request.BannerSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-    // 创建db
+	// 创建db
 	db := global.GVA_DB.Model(&model.Banner{})
-    var banners []model.Banner
-    // 如果有条件搜索 下方会自动创建搜索语句
+	var banners []model.Banner
+	// 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&banners).Error
 	return err, banners, total

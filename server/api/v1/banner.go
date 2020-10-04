@@ -58,7 +58,7 @@ func DeleteBanner(c *gin.Context) {
 // @Router /banner/deleteBannerByIds [delete]
 func DeleteBannerByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    _ = c.ShouldBindJSON(&IDS)
+	_ = c.ShouldBindJSON(&IDS)
 	err := service.DeleteBannerByIds(IDS)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)
