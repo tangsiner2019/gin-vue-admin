@@ -1,25 +1,40 @@
 <template>
   <div>
     <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">        
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
         <el-form-item>
-          <el-button @click="onSubmit" type="primary">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="openDialog" type="primary">新增cate表</el-button>
+          <el-button
+            @click="openDialog"
+            plain
+            type="primary"
+            icon="el-icon-plus"
+            >新增</el-button
+          >
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
             <p>确定要删除吗？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
-                <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
-              </div>
-            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
+            <div style="text-align: right; margin: 0">
+              <el-button @click="deleteVisible = false" size="mini" type="text"
+                >取消</el-button
+              >
+              <el-button @click="onDelete" size="mini" type="primary"
+                >确定</el-button
+              >
+            </div>
+            <el-button
+              plain
+              icon="el-icon-delete"
+              size="mini"
+              slot="reference"
+              type="danger"
+              >批量删除</el-button
+            >
           </el-popover>
         </el-form-item>
       </el-form>
     </div>
+
     <el-table
       :data="tableData"
       @selection-change="handleSelectionChange"
@@ -29,29 +44,73 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="日期" width="180">
-         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
-    </el-table-column>
-    
-    <el-table-column label="name字段" prop="name" width="120"></el-table-column> 
-    
-    <el-table-column label="sort字段" prop="sort" width="120"></el-table-column> 
-    
-    <el-table-column label="status字段" prop="status" width="120"></el-table-column> 
-    
-    <el-table-column label="type字段" prop="type" width="120"></el-table-column> 
-    
-      <el-table-column label="按钮组">
+      <el-table-column
+        type="selection"
+        width="40"
+        align="center"
+      ></el-table-column>
+
+      <el-table-column label="类型" width="100" sortable sort-by="type" align="center">
+        <template slot-scope="scope">{{
+          scope.row.type | formatType
+        }}</template>
+      </el-table-column>
+      <el-table-column label="名称" prop="name" width="200"></el-table-column>
+      <el-table-column label="是否禁用" width="80">
         <template slot-scope="scope">
-          <el-button @click="updateCate(scope.row)" size="small" type="primary">变更</el-button>
+          <el-tag v-if="scope.row.status === 0" type="info">正常</el-tag>
+          <el-tag v-if="scope.row.status === -1" type="warning">已禁用</el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="序号"
+        prop="sort"
+        width="60"
+        align="center"
+      ></el-table-column>
+
+      <el-table-column label="创建日期" width="160">
+        <template slot-scope="scope">{{
+          scope.row.CreatedAt | formatDate
+        }}</template>
+      </el-table-column>
+
+      <el-table-column label="操作" width="">
+        <template slot-scope="scope">
+          <el-button
+            @click="updateCate(scope.row)"
+            size="small"
+            icon="el-icon-edit"
+            type="primary"
+            plain
+            >编辑</el-button
+          >
           <el-popover placement="top" width="160" v-model="scope.row.visible">
             <p>确定要删除吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteCate(scope.row)">确定</el-button>
+              <el-button
+                size="mini"
+                type="text"
+                @click="scope.row.visible = false"
+                >取消</el-button
+              >
+              <el-button
+                type="primary"
+                size="mini"
+                @click="deleteCate(scope.row)"
+                >确定</el-button
+              >
             </div>
-            <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
+            <el-button
+              plain
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              slot="reference"
+              style="margin-left: 10px"
+              >删除</el-button
+            >
           </el-popover>
         </template>
       </el-table-column>
@@ -61,38 +120,46 @@
       :current-page="page"
       :page-size="pageSize"
       :page-sizes="[10, 30, 50, 100]"
-      :style="{float:'right',padding:'20px'}"
+      :style="{ float: 'right', padding: '20px' }"
       :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
 
-    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      此处请使用表单生成器生成form填充 表单默认绑定 formData 如手动修改过请自行修改key
-      <div class="dialog-footer" slot="footer">
-        <el-button @click="closeDialog">取 消</el-button>
-        <el-button @click="enterDialog" type="primary">确 定</el-button>
-      </div>
+    <el-dialog
+      :before-close="closeDialog"
+      :visible.sync="dialogFormVisible"
+      :title="type === 'create' ? '新增分类' : '编辑分类'"
+    >
+      <add-item
+        v-if="dialogFormVisible"
+        @close="closeDialog"
+        @submit="enterDialog"
+        :item="formData"
+      ></add-item>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import {
-    createCate,
-    deleteCate,
-    deleteCateByIds,
-    updateCate,
-    findCate,
-    getCateList
-} from "@/api/cate";  //  此处请自行替换地址
+  createCate,
+  deleteCate,
+  deleteCateByIds,
+  updateCate,
+  findCate,
+  getCateList,
+} from "@/api/cate"; //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
-
+import AddItem from "./add";
 export default {
   name: "Cate",
   mixins: [infoList],
+  components: {
+    AddItem,
+  },
   data() {
     return {
       listApi: getCateList,
@@ -100,13 +167,17 @@ export default {
       visible: false,
       type: "",
       deleteVisible: false,
-      multipleSelection: [],formData: {
-        name:null,sort:null,status:null,type:null,
-      }
+      multipleSelection: [],
+      formData: {
+        name: null,
+        sort: null,
+        status: null,
+        type: null,
+      },
     };
   },
   filters: {
-    formatDate: function(time) {
+    formatDate: function (time) {
       if (time != null && time != "") {
         var date = new Date(time);
         return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
@@ -114,40 +185,50 @@ export default {
         return "";
       }
     },
-    formatBoolean: function(bool) {
+    formatBoolean: function (bool) {
       if (bool != null) {
-        return bool ? "是" :"否";
+        return bool ? "是" : "否";
       } else {
         return "";
       }
-    }
+    },
+    formatType: function (str) {
+      return str === "news" ? "资讯" : "商品";
+    },
   },
   methods: {
-      //条件搜索前端看此方法
-      onSubmit() {
-        this.page = 1
-        this.pageSize = 10        
-        this.getTableData()
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-      async onDelete() {
-        const ids = []
-        this.multipleSelection &&
-          this.multipleSelection.map(item => {
-            ids.push(item.ID)
-          })
-        const res = await deleteCateByIds({ ids })
-        if (res.code == 0) {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.deleteVisible = false
-          this.getTableData()
-        }
-      },
+    //条件搜索前端看此方法
+    onSubmit() {
+      this.page = 1;
+      this.pageSize = 10;
+      this.getTableData();
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    async onDelete() {
+      const ids = [];
+      this.multipleSelection &&
+        this.multipleSelection.map((item) => {
+          ids.push(item.ID);
+        });
+      if (ids.length < 1) {
+        this.$message({
+          type: "warning",
+          message: "请选择待删除的项",
+        });
+        return;
+      }
+      const res = await deleteCateByIds({ ids });
+      if (res.code == 0) {
+        this.$message({
+          type: "success",
+          message: "删除成功",
+        });
+        this.deleteVisible = false;
+        this.getTableData();
+      }
+    },
     async updateCate(row) {
       const res = await findCate({ ID: row.ID });
       this.type = "update";
@@ -159,11 +240,10 @@ export default {
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
-        
-          name:null,
-          sort:null,
-          status:null,
-          type:null,
+        name: null,
+        sort: null,
+        status: null,
+        type: null,
       };
     },
     async deleteCate(row) {
@@ -172,18 +252,23 @@ export default {
       if (res.code == 0) {
         this.$message({
           type: "success",
-          message: "删除成功"
+          message: "删除成功",
         });
         this.getTableData();
       }
     },
-    async enterDialog() {
+    async enterDialog(item) {
       let res;
+      this.formData.name = item.name;
+      this.formData.type = item.type;
+      this.formData.sort = item.sort;
+      this.formData.status = item.status;
       switch (this.type) {
         case "create":
           res = await createCate(this.formData);
           break;
         case "update":
+          this.formData.ID = item.id;
           res = await updateCate(this.formData);
           break;
         default:
@@ -192,9 +277,9 @@ export default {
       }
       if (res.code == 0) {
         this.$message({
-          type:"success",
-          message:"创建/更改成功"
-        })
+          type: "success",
+          message: "创建/更改成功",
+        });
         this.closeDialog();
         this.getTableData();
       }
@@ -202,10 +287,11 @@ export default {
     openDialog() {
       this.type = "create";
       this.dialogFormVisible = true;
-    }
+    },
   },
   async created() {
-    await this.getTableData();}
+    await this.getTableData();
+  },
 };
 </script>
 
