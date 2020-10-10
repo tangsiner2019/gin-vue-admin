@@ -207,16 +207,7 @@ export default {
       editorOption: {
         placeholder: "请输入内容",
       },
-      cate_idOptions: [
-        {
-          label: "商品",
-          value: "1",
-        },
-        {
-          label: "资讯",
-          value: "2",
-        },
-      ],
+      
       img_pathAction: `${path}/fileUploadAndDownload/upload`,
     };
   },

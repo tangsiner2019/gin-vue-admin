@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-info">
-    <div>
+    <!-- <div>
       <span>Powered by</span>
       <span>
       <a href="https://www.bomqi.com" target="_blank">Bomqi Tec. Stu.</a>
@@ -10,7 +10,7 @@
       <span>
       <a href="http://www.ryedesign.cn" target="_blank">成都黑麦设计顾问有限公司</a>
       </span>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
